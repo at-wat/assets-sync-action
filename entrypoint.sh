@@ -21,7 +21,7 @@ for repo in ${INPUT_REPOS}
 do
   echo "Syncing ${repo}"
   tmpdir=$(mktemp -d)
-  git -C ${tmpdir} clone --depth=1 https://github.com/${repo}
+  git clone --depth=1 https://github.com/${repo} ${tmpdir}
   git -C ${tmpdir} checkout -b sync-assets-${version}
 
   # Copy files with directory structure

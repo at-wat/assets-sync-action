@@ -26,6 +26,7 @@ do
   echo "Syncing ${repo}"
   tmpdir=$(mktemp -d)
   git clone --depth=1 https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${repo} ${tmpdir}
+  base_branch=$(git -C ${tmpdir} symbolic-ref --short HEAD)
   git -C ${tmpdir} checkout -b sync-assets-${version}
 
   # Copy files with directory structure
@@ -46,7 +47,6 @@ do
 
   git -C ${tmpdir} commit -m "Update assets to ${version}"
   git -C ${tmpdir} push origin sync-assets-${version}
-  base_branch=$(git -C ${tmpdir} symbolic-ref --short HEAD)
 
   # Open PR
   echo "- Opening PR"

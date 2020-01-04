@@ -30,12 +30,21 @@ do
     echo "- Copying ${file}"
     cp ${file} ${tmpdir}/${file}
   done
+
+  if ! git -C ${tmpdir} diff --exit-code
+  then
+    echo "- ${repo} is up-to-date"
+    rm -rf ${tmpdir}
+    continue
+  fi
+
   git -C ${tmpdir} add .
   git -C ${tmpdir} commit -m "Update assets to ${version}"
   git -C ${tmpdir} push origin sync-assets-${version}
   base_branch=$(git -C ${tmpdir} symbolic-ref --short HEAD)
 
   # Open PR
+  echo "- Opening PR"
   (cd ${tmpdir}; hub pull-request \
     -b ${base_branch} \
     -h sync-assets-${version} \

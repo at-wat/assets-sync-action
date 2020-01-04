@@ -26,7 +26,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: sync
-        uses: at-wat/assets-sync-action@v1
+        uses: at-wat/assets-sync-action@v0
         with:
           repos: @@owner@@/@@repo1@@ @@owner@@/@@repo2@@
           git_user: @@MAINTAINER_NAME@@

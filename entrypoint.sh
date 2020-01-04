@@ -25,9 +25,10 @@ do
   git -C ${tmpdir} checkout -b sync-assets-${version}
 
   # Copy files with directory structure
-  for file in $(cd root; find .)
+  for file in $(cd root; find . -type f)
   do
     echo "- Copying ${file}"
+    mkdir -p $(dirname ${tmpdir}/${file})
     cp ${file} ${tmpdir}/${file}
   done
 

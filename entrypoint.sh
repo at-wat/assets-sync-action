@@ -14,6 +14,7 @@ fi
 version=$(basename ${GITHUB_REF})
 
 echo -e "machine github.com\nlogin ${INPUT_GITHUB_TOKEN}" > ~/.netrc
+echo -e "machine api.github.com\nlogin ${INPUT_GITHUB_TOKEN}" >> ~/.netrc
 git config --global user.name ${INPUT_GIT_USER}
 git config --global user.email ${INPUT_GIT_EMAIL}
 

@@ -5,7 +5,7 @@ GitHub Action to deploy asset files to multiple repositories.
 ## Inputs
 <dl>
   <dt>repos</dt> <dd>Space separated list of target repository slugs. (required)</dd>
-  <dt>github_token</dt> <dd>GitHub personal access token <b>with write permission to the repos</b>. (required)</dd>
+  <dt>github_token</dt> <dd>GitHub personal access token <b>with write permission to the repos</b>. Use <a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets">encrypted secrets</a>. (required)</dd>
   <dt>git_user</dt> <dd>User name of commit author. (required)</dd>
   <dt>git_email</dt> <dd>E-mail address of commit author. (required)</dd>
 </dl>

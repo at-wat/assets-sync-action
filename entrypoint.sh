@@ -32,7 +32,7 @@ do
     cp ./root/${file} ${tmpdir}/${file}
   done
 
-  if ! git -C ${tmpdir} diff --exit-code
+  if git -C ${tmpdir} diff --exit-code
   then
     echo "- ${repo} is up-to-date"
     rm -rf ${tmpdir}

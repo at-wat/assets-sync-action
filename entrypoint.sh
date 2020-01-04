@@ -13,8 +13,6 @@ fi
 
 version=$(basename ${GITHUB_REF})
 
-echo -e "machine github.com\nlogin ${INPUT_GITHUB_TOKEN}" > ~/.netrc
-echo -e "machine api.github.com\nlogin ${INPUT_GITHUB_TOKEN}" >> ~/.netrc
 git config --global user.name ${INPUT_GIT_USER}
 git config --global user.email ${INPUT_GIT_EMAIL}
 
@@ -26,7 +24,7 @@ for repo in ${INPUT_REPOS}
 do
   echo "Syncing ${repo}"
   tmpdir=$(mktemp -d)
-  git clone --depth=1 https://github.com/${repo} ${tmpdir}
+  git clone --depth=1 https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${repo} ${tmpdir}
   git -C ${tmpdir} checkout -b sync-assets-${version}
 
   # Copy files with directory structure

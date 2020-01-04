@@ -29,7 +29,7 @@ do
   do
     echo "- Copying ${file}"
     mkdir -p $(dirname ${tmpdir}/${file})
-    cp ${file} ${tmpdir}/${file}
+    cp ./root/${file} ${tmpdir}/${file}
   done
 
   if ! git -C ${tmpdir} diff --exit-code

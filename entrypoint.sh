@@ -31,15 +31,15 @@ do
     mkdir -p $(dirname ${tmpdir}/${file})
     cp ./root/${file} ${tmpdir}/${file}
   done
+  git -C ${tmpdir} add .
 
-  if git -C ${tmpdir} diff --exit-code
+  if git -C ${tmpdir} diff --cached --exit-code
   then
     echo "- ${repo} is up-to-date"
     rm -rf ${tmpdir}
     continue
   fi
 
-  git -C ${tmpdir} add .
   git -C ${tmpdir} commit -m "Update assets to ${version}"
   git -C ${tmpdir} push origin sync-assets-${version}
   base_branch=$(git -C ${tmpdir} symbolic-ref --short HEAD)

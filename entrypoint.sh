@@ -13,6 +13,18 @@ fi
 
 version=$(basename ${GITHUB_REF})
 message_template=${INPUT_COMMIT_MESSAGE:-"Update assets to %v"}
+push_prefix=
+
+case "${INPUT_DRYRUN:-false}" in
+  "true" )
+    echo "Dryrun"
+    push_prefix="echo ";;
+  "false" )
+    ;;
+  * )
+    echo "dryrun option must be 'true' or 'false'" >&2
+    exit 1;;
+esac
 
 git config --global user.name ${INPUT_GIT_USER}
 git config --global user.email ${INPUT_GIT_EMAIL}
@@ -48,11 +60,11 @@ do
 
   message=${message_template//%v/${version}}
   git -C ${tmpdir} commit -m "${message}"
-  git -C ${tmpdir} push origin sync-assets-${version}
+  ${push_prefix} git -C ${tmpdir} push origin sync-assets-${version}
 
   # Open PR
   echo "- Opening PR"
-  (cd ${tmpdir}; hub pull-request \
+  (cd ${tmpdir}; ${push_prefix} hub pull-request \
     -b ${base_branch} \
     -h sync-assets-${version} \
     --no-edit \

@@ -12,6 +12,7 @@ then
 fi
 
 version=$(basename ${GITHUB_REF})
+message_template=${INPUT_COMMIT_MESSAGE:-"Update assets to %v"}
 
 git config --global user.name ${INPUT_GIT_USER}
 git config --global user.email ${INPUT_GIT_EMAIL}
@@ -45,7 +46,8 @@ do
     continue
   fi
 
-  git -C ${tmpdir} commit -m "Update assets to ${version}"
+  message=${message_template//%v/${version}}
+  git -C ${tmpdir} commit -m "${message}"
   git -C ${tmpdir} push origin sync-assets-${version}
 
   # Open PR

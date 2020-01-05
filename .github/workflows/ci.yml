@@ -14,7 +14,7 @@ jobs:
           mkdir -p root
           echo "Test file" > root/test.txt
       - name: sync test
-        uses: at-wat/assets-sync-action@${{ github.sha }}
+        uses: ./
         with:
           repos: |
             at-wat/assets-sync-action

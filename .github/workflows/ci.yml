@@ -9,6 +9,8 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
       - name: prepare test data
         run: |
           mkdir -p root

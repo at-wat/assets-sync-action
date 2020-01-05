@@ -13,6 +13,8 @@ inputs:
   git_email:
     description: "E-mail address of commit author."
     required: true
+  commit_message:
+    description: "Commit message of the PR. Defaults to 'Update assets to %v'. ('%v': version tag string)"
 runs:
   using: "docker"
   image: "Dockerfile"

@@ -1,0 +1,25 @@
+name: assets-sync-ci
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: prepare test data
+        run: |
+          mkdir -p root
+          echo "Test file" > root/test.txt
+      - name: sync test
+        uses: at-wat/assets-sync-action@${{ github.sha }}
+        with:
+          repos: |
+            at-wat/assets-sync-action
+          git_user: Atsushi Watanabe
+          git_email: atsushi.w@ieee.org
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dryrun: true
+

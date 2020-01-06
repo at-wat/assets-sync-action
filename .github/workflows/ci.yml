@@ -24,4 +24,19 @@ jobs:
           git_email: atsushi.w@ieee.org
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dryrun: true
+      - name: prepare another test data
+        run: |
+          rm -rf root
+          mkdir -p root2
+          echo "Test file 2" > root2/test.txt
+      - name: sync test with root_dir option
+        uses: ./
+        with:
+          repos: |
+            at-wat/assets-sync-action
+          root_dir: root2
+          git_user: Atsushi Watanabe
+          git_email: atsushi.w@ieee.org
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dryrun: true
 

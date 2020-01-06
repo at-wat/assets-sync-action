@@ -5,9 +5,11 @@ cd "${GITHUB_WORKSPACE}" \
 
 set -eu
 
-if [ ! -d root ]
+root_dir=${INPUT_ROOT_DIR:-root}
+
+if [ ! -d ${root_dir} ]
 then
-  echo "Must have ./root directory" >&2
+  echo "Must have ${root_dir} directory" >&2
   exit 1
 fi
 
@@ -43,11 +45,11 @@ do
   git -C ${tmpdir} checkout -b sync-assets-${version}
 
   # Copy files with directory structure
-  for file in $(cd root; find . -type f)
+  for file in $(cd ${root_dir}; find . -type f)
   do
     echo "- Copying ${file}"
     mkdir -p $(dirname ${tmpdir}/${file})
-    cp ./root/${file} ${tmpdir}/${file}
+    cp ${root_dir}/${file} ${tmpdir}/${file}
   done
   git -C ${tmpdir} add .
 

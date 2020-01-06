@@ -15,8 +15,6 @@ jobs:
         run: |
           mkdir -p root
           echo "Test file" > root/test.txt
-          mkdir -p root2
-          echo "Test file 2" > root2/test.txt
       - name: sync test
         uses: ./
         with:
@@ -26,6 +24,11 @@ jobs:
           git_email: atsushi.w@ieee.org
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dryrun: true
+      - name: prepare another test data
+        run: |
+          rm -rf root
+          mkdir -p root2
+          echo "Test file 2" > root2/test.txt
       - name: sync test with root_dir option
         uses: ./
         with:

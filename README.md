@@ -54,3 +54,5 @@ jobs:
           git_email: @@MAINTAINER_EMAIL_ADDRESS@@
           github_token: ${{ secrets.GITHUB_TOKEN_REPO }}
 ```
+
+See https://github.com/at-wat/.rospkg-assets for the working example.

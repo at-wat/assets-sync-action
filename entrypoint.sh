@@ -16,13 +16,12 @@ fi
 version=$(basename ${GITHUB_REF})
 message_template=${INPUT_COMMIT_MESSAGE:-"Update assets to %v"}
 push_prefix=
-exclude_files=$(cd ${root_dir} && echo ${INPUT_EXCLUDE_PATHS} | xargs -n1 ls -1; true)
-
-# Take a snapshot
-git stash push -u -a
-git stash apply
 
 # Remove excluded files
+tmproot=$(mktemp -d)
+cp -r ${root_dir} ${tmproot}
+root_dir=${tmproot}
+exclude_files=$(cd ${root_dir} && echo ${INPUT_EXCLUDE_PATHS} | xargs -n1 ls -1; true)
 for excluded in ${exclude_files}
 do
   echo "Excluding ${excluded}"
@@ -86,8 +85,4 @@ do
 
   rm -rf ${tmpdir}
 done
-
-# Revert excluded files
-git stash -u
-git stash drop
-git stash pop
+rm -rf ${tmproot}

@@ -19,7 +19,7 @@ push_prefix=
 exclude_files=$(cd ${root_dir} && echo ${INPUT_EXCLUDE_PATHS} | xargs -n1 ls -1; true)
 
 # Take a snapshot
-git push -k -u -a
+git stash push -k -u -a
 
 # Remove excluded files
 for excluded in ${exclude_files}

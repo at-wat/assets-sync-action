@@ -17,6 +17,17 @@ version=$(basename ${GITHUB_REF})
 message_template=${INPUT_COMMIT_MESSAGE:-"Update assets to %v"}
 push_prefix=
 
+# Remove excluded files
+tmproot=$(mktemp -d)
+cp -r ${root_dir}/. ${tmproot}/
+root_dir=${tmproot}
+exclude_files=$(cd ${root_dir} && echo ${INPUT_EXCLUDE_PATHS} | xargs -n1 -r find . -name; true)
+for excluded in ${exclude_files}
+do
+  echo "Excluding ${excluded}"
+  (cd ${root_dir} && rm -rf ${excluded})
+done
+
 case "${INPUT_DRYRUN:-false}" in
   "true" )
     echo "Dryrun"
@@ -74,3 +85,4 @@ do
 
   rm -rf ${tmpdir}
 done
+rm -rf ${tmproot}

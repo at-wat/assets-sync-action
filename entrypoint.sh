@@ -25,7 +25,7 @@ exclude_files=$(cd ${root_dir} && echo ${INPUT_EXCLUDE_PATHS} | xargs -n1 -r fin
 for excluded in ${exclude_files}
 do
   echo "Excluding ${excluded}"
-  rm -rf ${excluded}
+  (cd ${root_dir} && rm -rf ${excluded})
 done
 
 case "${INPUT_DRYRUN:-false}" in

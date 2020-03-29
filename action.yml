@@ -19,6 +19,8 @@ inputs:
     description: "Root directory of the assets for this job. Defaults to 'root'."
   dryrun:
     description: "Set true to run the job without pushing."
+  exclude_paths:
+    description: "Space separated list of excluded path globs."
 runs:
   using: "docker"
   image: "Dockerfile"

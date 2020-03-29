@@ -88,4 +88,6 @@ do
 done
 
 # Revert excluded files
+git stash -u
+git stash drop
 git stash pop

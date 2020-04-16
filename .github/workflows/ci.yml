@@ -13,11 +13,23 @@ jobs:
         uses: actions/checkout@v2
       - name: prepare test data
         run: |
-          mkdir -p root
+          mkdir -p root/aaa
           echo "Test file" > root/test.txt
+          echo "File in directory" > root/aaa/test.txt
       - name: sync test
         uses: ./
         with:
+          repos: |
+            at-wat/assets-sync-action
+          git_user: Atsushi Watanabe
+          git_email: atsushi.w@ieee.org
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dryrun: true
+      - name: sync test with exclude_paths option
+        uses: ./
+        with:
+          exclude_paths: |
+            aaa/*.txt
           repos: |
             at-wat/assets-sync-action
           git_user: Atsushi Watanabe
@@ -39,4 +51,3 @@ jobs:
           git_email: atsushi.w@ieee.org
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dryrun: true
-

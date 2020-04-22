@@ -87,7 +87,7 @@ do
   git -C ${tmpdir} commit -m "${message}"
   ${push_prefix} git -C ${tmpdir} push ${force_push} origin sync-assets-${version}
 
-  if [ $(hub pr list -h sync-assets-${version} | wc -l) -gt 0 ]
+  if [ $(cd ${tmpdir}; hub pr list -h sync-assets-${version} | wc -l) -gt 0 ]
   then
     echo "- PR is already open"
     rm -rf ${tmpdir}

@@ -21,6 +21,8 @@ inputs:
     description: "Set true to run the job without pushing."
   exclude_paths:
     description: "Space separated list of excluded path globs."
+  force_push:
+    description: "Set true to force push sync branch."
 runs:
   using: "docker"
   image: "Dockerfile"

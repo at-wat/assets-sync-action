@@ -16,6 +16,7 @@ fi
 version=$(basename ${GITHUB_REF})
 message_template=${INPUT_COMMIT_MESSAGE:-"Update assets to %v"}
 push_prefix=
+force_push=
 
 # Remove excluded files
 tmproot=$(mktemp -d)
@@ -36,6 +37,17 @@ case "${INPUT_DRYRUN:-false}" in
     ;;
   * )
     echo "dryrun option must be 'true' or 'false'" >&2
+    exit 1;;
+esac
+
+case "${INPUT_FORCE_PUSH:-false}" in
+  "true" )
+    echo "Force push"
+    force_push=-f;;
+  "false" )
+    ;;
+  * )
+    echo "force_push option must be 'true' or 'false'" >&2
     exit 1;;
 esac
 
@@ -73,7 +85,7 @@ do
 
   message=${message_template//%v/${version}}
   git -C ${tmpdir} commit -m "${message}"
-  ${push_prefix} git -C ${tmpdir} push origin sync-assets-${version}
+  ${push_prefix} git -C ${tmpdir} push ${force_push} origin sync-assets-${version}
 
   # Open PR
   echo "- Opening PR"

@@ -15,6 +15,7 @@ fi
 
 version=$(basename ${GITHUB_REF})
 message_template=${INPUT_COMMIT_MESSAGE:-"Update assets to %v"}
+description=${INPUT_DESCRIPTION:-""}
 push_prefix=
 force_push=
 
@@ -99,8 +100,10 @@ do
   (cd ${tmpdir}; ${push_prefix} hub pull-request \
     -b ${base_branch} \
     -h sync-assets-${version} \
-    --no-edit \
-    "Update assets to ${version}")
+    --message \
+    "Update assets to ${version}" \
+    --message \
+    "${description}")
 
   rm -rf ${tmpdir}
 done

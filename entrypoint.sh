@@ -15,6 +15,8 @@ fi
 
 version=$(basename ${GITHUB_REF})
 message_template=${INPUT_COMMIT_MESSAGE:-"Update assets to %v"}
+head_branch_template=${INPUT_BRANCH:-"sync-assets-%v"}
+head_branch=${head_branch_template//%v/${version}}
 push_prefix=
 force_push=
 
@@ -65,7 +67,7 @@ do
   tmpdir=$(mktemp -d)
   git clone --depth=1 https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${repo} ${tmpdir}
   base_branch=$(git -C ${tmpdir} symbolic-ref --short HEAD)
-  git -C ${tmpdir} checkout -b sync-assets-${version}
+  git -C ${tmpdir} checkout -b ${head_branch}
 
   # Copy files with directory structure
   for file in $(cd ${root_dir}; find . -type f)
@@ -85,9 +87,9 @@ do
 
   message=${message_template//%v/${version}}
   git -C ${tmpdir} commit -m "${message}"
-  ${push_prefix} git -C ${tmpdir} push ${force_push} origin sync-assets-${version}
+  ${push_prefix} git -C ${tmpdir} push ${force_push} origin ${head_branch}
 
-  if [ $(cd ${tmpdir}; hub pr list -h sync-assets-${version} | wc -l) -gt 0 ]
+  if [ $(cd ${tmpdir}; hub pr list -h ${head_branch} | wc -l) -gt 0 ]
   then
     echo "- PR is already open"
     rm -rf ${tmpdir}
@@ -98,7 +100,7 @@ do
   echo "- Opening PR"
   (cd ${tmpdir}; ${push_prefix} hub pull-request \
     -b ${base_branch} \
-    -h sync-assets-${version} \
+    -h ${head_branch} \
     --no-edit \
     "Update assets to ${version}")
 

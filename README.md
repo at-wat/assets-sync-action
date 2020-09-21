@@ -9,6 +9,7 @@ GitHub Action to deploy asset files to multiple repositories.
   <dt>git_user</dt> <dd>User name of commit author. (required)</dd>
   <dt>git_email</dt> <dd>E-mail address of commit author. (required)</dd>
   <dt>commit_message</dt> <dd>Commit message of generated commits. Defaults to <code>Update assets to %v</code>. (<code>%v</code>: version tag string)</dd>
+  <dt>branch</dt> <dd>Branch name to which the changes are committed. Defaults to <code>sync-assets-%v</code>. (<code>%v</code>: version tag string)</dd>
   <dt>root_dir</dt> <dd>Root directory of the assets for this job. Defaults to <code>root</code>.</dd>
   <dt>dryrun</dt> <dd>Set true to run the job without pushing.</dd>
   <dt>exclude_paths</dt> <dd>Space separated list of excluded path globs.</dd>

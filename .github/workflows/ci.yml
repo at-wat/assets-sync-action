@@ -36,6 +36,26 @@ jobs:
           git_email: atsushi.w@ieee.org
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dryrun: true
+      - name: sync test with rm option
+        uses: ./
+        with:
+          repos: |
+            at-wat/assets-sync-action
+          rm: README.md
+          git_user: Atsushi Watanabe
+          git_email: atsushi.w@ieee.org
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dryrun: true
+      - name: sync test with rm option (non-existent target)
+        uses: ./
+        with:
+          repos: |
+            at-wat/assets-sync-action
+          rm: README12345.md
+          git_user: Atsushi Watanabe
+          git_email: atsushi.w@ieee.org
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dryrun: true
       - name: sync test with branch option
         uses: ./
         with:
@@ -57,26 +77,6 @@ jobs:
           repos: |
             at-wat/assets-sync-action
           root_dir: root2
-          git_user: Atsushi Watanabe
-          git_email: atsushi.w@ieee.org
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          dryrun: true
-      - name: sync test with rm option
-        uses: ./
-        with:
-          repos: |
-            at-wat/assets-sync-action
-          rm: README.md
-          git_user: Atsushi Watanabe
-          git_email: atsushi.w@ieee.org
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          dryrun: true
-      - name: sync test with rm option (non-existent target)
-        uses: ./
-        with:
-          repos: |
-            at-wat/assets-sync-action
-          rm: README12345.md
           git_user: Atsushi Watanabe
           git_email: atsushi.w@ieee.org
           github_token: ${{ secrets.GITHUB_TOKEN }}

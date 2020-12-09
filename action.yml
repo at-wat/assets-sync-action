@@ -19,6 +19,8 @@ inputs:
     description: "Branch name to which the changes are committed. Defaults to 'sync-assets-%v'. ('%v': version tag string)"
   root_dir:
     description: "Root directory of the assets for this job. Defaults to 'root'."
+  rm:
+    description: "Files to be removed."
   dryrun:
     description: "Set true to run the job without pushing."
   exclude_paths:

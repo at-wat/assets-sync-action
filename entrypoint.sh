@@ -76,6 +76,14 @@ do
     mkdir -p $(dirname ${tmpdir}/${file})
     cp ${root_dir}/${file} ${tmpdir}/${file}
   done
+
+  # Remove files
+  for file in ${INPUT_RM}
+  do
+    echo "- Removing ${file}"
+    rm -f ${tmpdir}/${file}
+  done
+
   git -C ${tmpdir} add .
 
   if git -C ${tmpdir} diff --cached --exit-code

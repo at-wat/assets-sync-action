@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.13
 
 RUN echo http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
   && apk add --no-cache \

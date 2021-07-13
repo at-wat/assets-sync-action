@@ -20,6 +20,12 @@ head_branch=${head_branch_template//%v/${version}}
 push_prefix=
 force_push=
 
+if ! [[ "${INPUT_PUSH_INTERVAL:-1}" =~ ^[0-9]+$ ]]
+then
+  echo "push_interval must be a number" >&2
+  exit 1
+fi
+
 # Remove excluded files
 tmproot=$(mktemp -d)
 cp -r ${root_dir}/. ${tmproot}/

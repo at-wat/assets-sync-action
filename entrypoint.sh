@@ -113,5 +113,7 @@ do
     "Update assets to ${version}")
 
   rm -rf ${tmpdir}
+
+  sleep ${INPUT_PUSH_INTERVAL:-1}
 done
 rm -rf ${tmproot}

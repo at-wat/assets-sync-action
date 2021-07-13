@@ -27,6 +27,8 @@ inputs:
     description: "Space separated list of excluded path globs."
   force_push:
     description: "Set true to force push sync branch."
+  push_interval:
+    description: "Push interval to avoid abuse detection."
 runs:
   using: "docker"
   image: "Dockerfile"

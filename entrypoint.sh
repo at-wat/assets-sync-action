@@ -72,6 +72,10 @@ do
   echo "Syncing ${repo}"
   tmpdir=$(mktemp -d)
   git clone --depth=1 https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${repo} ${tmpdir}
+
+  # Allow to fetch existing PR branch
+  git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+
   base_branch=$(git -C ${tmpdir} symbolic-ref --short HEAD)
   git -C ${tmpdir} checkout -b ${head_branch}
 
@@ -101,7 +105,20 @@ do
 
   message=${message_template//%v/${version}}
   git -C ${tmpdir} commit -m "${message}"
-  ${push_prefix} git -C ${tmpdir} push ${force_push} origin ${head_branch}
+
+  if ! ${push_prefix} git -C ${tmpdir} push ${force_push} origin ${head_branch}
+  then
+    if ! git -C ${tmpdir} fetch ${head_branch}
+    then
+      echo "Push failed and can't fetch the branch" >&2
+      exit 1
+    fi
+    if ! git diff --exit-code ${head_branch} origin/${head_branch}
+    then
+      echo "Branch already exists but has diff" >&2
+      exit 1
+    fi
+  fi
 
   if [ $(cd ${tmpdir}; hub pr list -h ${head_branch} | wc -l) -gt 0 ]
   then

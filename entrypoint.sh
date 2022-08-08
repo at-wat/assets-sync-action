@@ -74,7 +74,7 @@ do
   git clone --depth=1 https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${repo} ${tmpdir}
 
   # Allow to fetch existing PR branch
-  git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+  git -C ${tmpdir} config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
 
   base_branch=$(git -C ${tmpdir} symbolic-ref --short HEAD)
   git -C ${tmpdir} checkout -b ${head_branch}
@@ -113,7 +113,7 @@ do
       echo "Push failed and can't fetch the branch" >&2
       exit 1
     fi
-    if ! git diff --exit-code ${head_branch} origin/${head_branch}
+    if ! git -C ${tmpdir} diff --exit-code ${head_branch} origin/${head_branch}
     then
       echo "Branch already exists but has diff" >&2
       exit 1

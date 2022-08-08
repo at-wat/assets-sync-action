@@ -107,7 +107,7 @@ do
     # Allow to fetch existing PR branch
     git -C ${tmpdir} config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
 
-    if ! git -C ${tmpdir} fetch ${head_branch}
+    if ! git -C ${tmpdir} fetch origin ${head_branch}
     then
       echo "- Push failed and can't fetch the branch" >&2
       exit 1

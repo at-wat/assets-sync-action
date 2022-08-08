@@ -101,7 +101,24 @@ do
 
   message=${message_template//%v/${version}}
   git -C ${tmpdir} commit -m "${message}"
-  ${push_prefix} git -C ${tmpdir} push ${force_push} origin ${head_branch}
+
+  if ! ${push_prefix} git -C ${tmpdir} push ${force_push} origin ${head_branch}
+  then
+    # Allow to fetch existing PR branch
+    git -C ${tmpdir} config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+
+    if ! git -C ${tmpdir} fetch ${head_branch}
+    then
+      echo "- Push failed and can't fetch the branch" >&2
+      exit 1
+    fi
+    if ! git -C ${tmpdir} diff --exit-code ${head_branch} origin/${head_branch}
+    then
+      echo "- Branch already exists but has diff" >&2
+      exit 1
+    fi
+    echo "- Reusing existing branch"
+  fi
 
   if [ $(cd ${tmpdir}; hub pr list -h ${head_branch} | wc -l) -gt 0 ]
   then

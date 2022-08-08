@@ -72,10 +72,6 @@ do
   echo "Syncing ${repo}"
   tmpdir=$(mktemp -d)
   git clone --depth=1 https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${repo} ${tmpdir}
-
-  # Allow to fetch existing PR branch
-  git -C ${tmpdir} config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
-
   base_branch=$(git -C ${tmpdir} symbolic-ref --short HEAD)
   git -C ${tmpdir} checkout -b ${head_branch}
 
@@ -108,6 +104,9 @@ do
 
   if ! ${push_prefix} git -C ${tmpdir} push ${force_push} origin ${head_branch}
   then
+    # Allow to fetch existing PR branch
+    git -C ${tmpdir} config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+
     if ! git -C ${tmpdir} fetch ${head_branch}
     then
       echo "Push failed and can't fetch the branch" >&2

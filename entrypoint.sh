@@ -120,7 +120,7 @@ do
     echo "- Reusing existing branch"
   fi
 
-  if [ $(cd ${tmpdir}; hub pr list -h ${head_branch} | wc -l) -gt 0 ]
+  if [ $(cd ${tmpdir}; gh pr list --head ${head_branch} | wc -l) -gt 0 ]
   then
     echo "- PR is already open"
     rm -rf ${tmpdir}
@@ -129,11 +129,13 @@ do
 
   # Open PR
   echo "- Opening PR"
-  (cd ${tmpdir}; ${push_prefix} hub pull-request \
-    -b ${base_branch} \
-    -h ${head_branch} \
-    --no-edit \
-    "Update assets to ${version}")
+  (
+    cd ${tmpdir}
+    ${push_prefix} gh pr create \
+      --base ${base_branch} \
+      --head ${head_branch} \
+      --fill
+  )
 
   rm -rf ${tmpdir}
 

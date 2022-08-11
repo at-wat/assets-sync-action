@@ -1,0 +1,51 @@
+name: assets-sync-ci
+on:
+  pull_request:
+    branches: master
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: Prepare test data
+        run: |
+          mkdir -p /tmp/test-assets
+          echo 'data' > /tmp/test-assets/synced-file.txt
+      - name: sync test
+        uses: ./
+        with:
+          repos: at-wat/assets-sync-action
+          root_dir: /tmp/test-assets
+          commit_message: 'E2E assets sync test ${{ github.sha }}'
+          branch: 'e2e-${{ github.sha }}'
+          git_user: Atsushi Watanabe
+          git_email: atsushi.w@ieee.org
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dryrun: false
+      - name: Check
+        run: |
+          gh pr view 'e2e-${{ github.sha }}' \
+              --json title,body,author,files \
+            > actual.json
+          cat <<EOS > expected.json
+          {
+            "Author": {
+              "login": "github-actions"
+            },
+            "body": "",
+            "files": [
+              {
+                "path": "synced-file.txt",
+                "additions": 1,
+                "deletions": 0
+              }
+            ],
+            "title": "E2E assets sync test ${{ github.sha }}"
+          }
+          EOS
+          diff expected.json actual.json
+      - name: Cleanup
+        if: always()
+        run: gh pr close 'e2e-${{ github.sha }}' --delete-branch

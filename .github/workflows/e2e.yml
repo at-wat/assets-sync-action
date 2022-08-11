@@ -26,7 +26,7 @@ jobs:
           dryrun: false
       - name: Check
         env:
-          GITHUB_ACTIONS: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr view 'e2e-${{ github.sha }}' \
               --json title,body,author,files \
@@ -51,5 +51,5 @@ jobs:
       - name: Cleanup
         if: always()
         env:
-          GITHUB_ACTIONS: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr close 'e2e-${{ github.sha }}' --delete-branch

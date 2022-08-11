@@ -33,7 +33,7 @@ jobs:
             | jq > actual.json
           cat <<EOS | jq > expected.json
           {
-            "Author": {
+            "author": {
               "login": "github-actions"
             },
             "body": "",

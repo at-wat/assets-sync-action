@@ -30,8 +30,8 @@ jobs:
         run: |
           gh pr view 'e2e-${{ github.sha }}' \
               --json title,body,author,files \
-            > actual.json
-          cat <<EOS > expected.json
+            | jq > actual.json
+          cat <<EOS | jq > expected.json
           {
             "Author": {
               "login": "github-actions"
@@ -47,7 +47,7 @@ jobs:
             "title": "E2E assets sync test ${{ github.sha }}"
           }
           EOS
-          diff expected.json actual.json
+          diff -up expected.json actual.json
       - name: Cleanup
         if: always()
         env:

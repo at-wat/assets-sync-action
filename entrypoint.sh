@@ -64,7 +64,7 @@ git config --global user.email ${INPUT_GIT_EMAIL}
 
 export GITHUB_TOKEN=${INPUT_GITHUB_TOKEN}
 git config --global \
-  url."https://${INPUT_GITHUB_TOKEN}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+  url."https://x-access-token:${INPUT_GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
 
 for repo in ${INPUT_REPOS}
 do

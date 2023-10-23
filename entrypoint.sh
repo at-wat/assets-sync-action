@@ -105,6 +105,7 @@ do
   message=${message_template//%v/${version}}
   git -C ${tmpdir} commit -m "${message}"
 
+  echo "Pushing branch"
   if ! ${push_prefix} git -C ${tmpdir} push ${force_push} origin ${head_branch}
   then
     # Allow to fetch existing PR branch
@@ -123,6 +124,7 @@ do
     echo "- Reusing existing branch"
   fi
 
+  echo "Opening PR"
   if [ $(cd ${tmpdir}; gh pr list --head ${head_branch} | wc -l) -gt 0 ]
   then
     echo "- PR is already open"

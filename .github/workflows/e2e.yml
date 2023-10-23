@@ -34,7 +34,8 @@ jobs:
           cat <<EOS | jq > expected.json
           {
             "author": {
-              "login": "github-actions"
+              "is_bot": true,
+              "login": "app/github-actions"
             },
             "body": "",
             "files": [

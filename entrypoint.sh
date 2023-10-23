@@ -62,16 +62,15 @@ esac
 git config --global user.name ${INPUT_GIT_USER}
 git config --global user.email ${INPUT_GIT_EMAIL}
 
-# Set GITHUB_USER to workaround hub command auth error
-# https://github.com/github/hub/issues/2149#issuecomment-513214342
-export GITHUB_USER="${GITHUB_ACTOR}"
 export GITHUB_TOKEN=${INPUT_GITHUB_TOKEN}
+git config --global \
+  url."https://x-access-token:${INPUT_GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
 
 for repo in ${INPUT_REPOS}
 do
   echo "Syncing ${repo}"
   tmpdir=$(mktemp -d)
-  git clone --depth=1 https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${repo} ${tmpdir}
+  git clone --depth=1 https://github.com/${repo} ${tmpdir}
   base_branch=$(git -C ${tmpdir} symbolic-ref --short HEAD)
   git -C ${tmpdir} checkout -b ${head_branch}
 
@@ -102,6 +101,7 @@ do
   message=${message_template//%v/${version}}
   git -C ${tmpdir} commit -m "${message}"
 
+  echo "Pushing branch"
   if ! ${push_prefix} git -C ${tmpdir} push ${force_push} origin ${head_branch}
   then
     # Allow to fetch existing PR branch
@@ -120,6 +120,7 @@ do
     echo "- Reusing existing branch"
   fi
 
+  echo "Opening PR"
   if [ $(cd ${tmpdir}; gh pr list --head ${head_branch} | wc -l) -gt 0 ]
   then
     echo "- PR is already open"

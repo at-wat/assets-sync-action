@@ -62,6 +62,11 @@ esac
 git config --global user.name ${INPUT_GIT_USER}
 git config --global user.email ${INPUT_GIT_EMAIL}
 
+# Set GITHUB_USER to workaround hub command auth error
+# https://github.com/github/hub/issues/2149#issuecomment-513214342
+export GITHUB_USER="${GITHUB_ACTOR}"
+export GITHUB_TOKEN=${INPUT_GITHUB_TOKEN}
+
 for repo in ${INPUT_REPOS}
 do
   echo "Syncing ${repo}"

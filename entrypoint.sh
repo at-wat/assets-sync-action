@@ -63,12 +63,18 @@ git config --global user.name ${INPUT_GIT_USER}
 git config --global user.email ${INPUT_GIT_EMAIL}
 
 export GITHUB_TOKEN=${INPUT_GITHUB_TOKEN}
+cat <<NETRC_EOS > ${HOME}/.netrc
+machine github.com
+login ${INPUT_GITHUB_TOKEN}
+machine api.github.com
+login ${INPUT_GITHUB_TOKEN}
+NETRC_EOS
 
 for repo in ${INPUT_REPOS}
 do
   echo "Syncing ${repo}"
   tmpdir=$(mktemp -d)
-  git clone --depth=1 https://${INPUT_GITHUB_TOKEN}@github.com/${repo} ${tmpdir}
+  git clone --depth=1 https://github.com/${repo} ${tmpdir}
   base_branch=$(git -C ${tmpdir} symbolic-ref --short HEAD)
   git -C ${tmpdir} checkout -b ${head_branch}
 
@@ -138,4 +144,5 @@ do
 
   sleep ${INPUT_PUSH_INTERVAL:-1}
 done
+rm ${HOME}/.netrc
 rm -rf ${tmproot}

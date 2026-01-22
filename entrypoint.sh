@@ -89,6 +89,12 @@ do
     rm -f ${tmpdir}/${file}
   done
 
+  # Run custom script
+  if [ -n "${INPUT_SCRIPT:-}" ]; then
+    echo "- Running custom script"
+    (cd ${tmpdir} && ASSETS_DIR="${GITHUB_WORKSPACE}" bash -c "${INPUT_SCRIPT}")
+  fi
+
   git -C ${tmpdir} add .
 
   if git -C ${tmpdir} diff --cached --exit-code

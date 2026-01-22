@@ -29,6 +29,8 @@ inputs:
     description: "Set true to force push sync branch."
   push_interval:
     description: "Push interval to avoid abuse detection."
+  script:
+    description: "Bash script to run in target repo before committing. ASSETS_DIR env var points to the source assets directory."
 runs:
   using: "docker"
   image: "Dockerfile"
